@@ -75,8 +75,8 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 image = skimage.io.imread('samples/sample.jpg')
 
 # original image
-plt.figure(figsize=(12,10))
-skimage.io.imshow(image)
+#plt.figure(figsize=(12,10))
+# skimage.io.imshow(image)
 
 
 # Run detection
@@ -90,12 +90,22 @@ mask = r['masks']
 mask = mask.astype(int)
 mask.shape
 
+
+# todo create a new image and 
+
 for i in range(mask.shape[2]):
-    temp = skimage.io.imread('samples/sample.jpg')
-    for j in range(temp.shape[2]):
-        temp[:,:,j] = temp[:,:,j] * mask[:,:,i]
-    plt.figure(figsize=(8,8))
-    plt.imshow(temp)
+    #temp = skimage.io.imread('samples/sample.jpg')
+    #for j in range(temp.shape[2]):
+    #    temp[:,:,j] = temp[:,:,j] * mask[:,:,i]
+    #plt.figure(figsize=(8,8))
+    #plt.imshow(temp)
+    visualize.apply_mask(image, mask[:,:,i], [1,0,0], alpha=1.0)
 
+plt.axis('off')
+plt.margins(0,0)
+plt.imshow(image)
+plt.savefig("test.png", bbox_inches='tight', pad_inches=0.0)
+plt.show()
 
-visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'])
+#visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'])
+
