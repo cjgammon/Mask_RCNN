@@ -78,6 +78,9 @@ image = skimage.io.imread('samples/sample.jpg')
 #plt.figure(figsize=(12,10))
 # skimage.io.imshow(image)
 
+mask_image = np.zeros([432,575,3],dtype=np.uint8)
+mask_image.fill(255) # or img[:] = 255
+
 
 # Run detection
 results = model.detect([image], verbose=1)
@@ -99,12 +102,16 @@ for i in range(mask.shape[2]):
     #    temp[:,:,j] = temp[:,:,j] * mask[:,:,i]
     #plt.figure(figsize=(8,8))
     #plt.imshow(temp)
-    visualize.apply_mask(image, mask[:,:,i], [1,0,0], alpha=1.0)
+    name_id = r['class_ids'][i]
+    name = class_names[name_id]
+    print(name)
+    visualize.apply_mask(mask_image, mask[:,:,i], [1,0,0], alpha=1.0)
+    #visualize.display_top_masks(mask_image, mask[:,:,i], r['class_ids'], class_names)
 
 plt.axis('off')
 plt.margins(0,0)
-plt.imshow(image)
-plt.savefig("test.png", bbox_inches='tight', pad_inches=0.0)
+plt.imshow(mask_image)
+plt.savefig("./output/test.png", bbox_inches='tight', pad_inches=0.0)
 plt.show()
 
 #visualize.display_instances(image, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'])
