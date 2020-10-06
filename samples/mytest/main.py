@@ -54,21 +54,24 @@ model.load_weights('samples/mask_rcnn_coco.h5', by_name=True)
 
 
 # COCO Class names
-class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
-               'bus', 'train', 'truck', 'boat', 'traffic light',
-               'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird',
-               'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear',
-               'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie',
-               'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball',
-               'kite', 'baseball bat', 'baseball glove', 'skateboard',
-               'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup',
-               'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
-               'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
-               'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
-               'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
-               'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
-               'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
-               'teddy bear', 'hair drier', 'toothbrush']
+# class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
+#             'bus', 'train', 'truck', 'boat', 'traffic light',
+#             'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird',
+#             'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear',
+#             'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie',
+#             'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball',
+#             'kite', 'baseball bat', 'baseball glove', 'skateboard',
+#             'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup',
+#             'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
+#             'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
+#             'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
+#             'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
+#             'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
+#             'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
+#             'teddy bear', 'hair drier', 'toothbrush']
+
+
+class_names = ["clouds","fog","sky","bridge","building","cage","fence","house","metal","net","platform","playing field","railing","railroad","road","roof","skyscraper","solid material","structural","solid wall","brick wall","stone wall","tile wall","wood wall","misc. wall","wood floor","tile floor","carpet","stone floor","marble floor","misc. floor","ceiling","tile ceiling","door","window","window blind","curtain","stairs","counter","cabinet","cupboard","mirror","cloth","clothes","towel","textile","paper","cardboard","plastic","panel","banner","dirt","flowers","grass","gravel","ground","hill","leaves","moss","mountain","mud","pavement","foliage","rock","sand","snow","stone","straw","wood","river","sea","water","waterdrops","bear","bird","cat","cow","dog","elephant","giraffe","horse","person","sheep","zebra","apple","banana","broccoli","cake","carrot","donut","hot dog","orange","pizza","salad","sandwich","fruit","vegetable","misc. food","bed","blanket","bottle","bowl","chair","clock","couch","cup","desk","dining table","fork","hair dryer","keyboard","knife","light","mat","microwave","mouse","napkin","oven","pillow","potted plant","refrigerator","remote","rug","shelf","sink","spoon","table","toaster","toilet","tv","vase","wine glass","misc. furniture","bench","branch","bush","fire hydrant","parking meter","stop sign","tent","traffic light","tree","backpack","baseball bat","baseball glove","book","cell phone","frisbee","handbag","kite","laptop","scissors","sports ball","suitcase","teddy bear","tennis racket","tie","toothbrush","umbrella","airplane","bicycle","boat","bus","car","motorcyle","skateboard","skis","snowboard","surfboard","train","truck"]
 
 
 # Load a random image from the images folder
@@ -78,6 +81,7 @@ image = skimage.io.imread('samples/sample.jpg')
 #plt.figure(figsize=(12,10))
 # skimage.io.imshow(image)
 
+# TODO get width and height from image..
 mask_image = np.zeros([432,575,3],dtype=np.uint8)
 mask_image.fill(255) # or img[:] = 255
 
@@ -104,8 +108,10 @@ for i in range(mask.shape[2]):
     #plt.imshow(temp)
     name_id = r['class_ids'][i]
     name = class_names[name_id]
+    color = name_id / 255;
     print(name)
-    visualize.apply_mask(mask_image, mask[:,:,i], [1,0,0], alpha=1.0)
+    print(name_id)
+    visualize.apply_mask(mask_image, mask[:,:,i], [color, color, color], alpha=1.0)
     #visualize.display_top_masks(mask_image, mask[:,:,i], r['class_ids'], class_names)
 
 plt.axis('off')
