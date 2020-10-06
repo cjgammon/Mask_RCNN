@@ -82,7 +82,8 @@ image = skimage.io.imread('samples/sample.jpg')
 # skimage.io.imshow(image)
 
 # TODO get width and height from image..
-mask_image = np.zeros([432,575,3],dtype=np.uint8)
+print(image.shape)
+mask_image = np.zeros(image.shape,dtype=np.uint8)
 mask_image.fill(255) # or img[:] = 255
 
 
@@ -92,27 +93,18 @@ results = model.detect([image], verbose=1)
 # Visualize results
 r = results[0]
 
-
 mask = r['masks']
 mask = mask.astype(int)
 mask.shape
 
 
-# todo create a new image and 
-
 for i in range(mask.shape[2]):
-    #temp = skimage.io.imread('samples/sample.jpg')
-    #for j in range(temp.shape[2]):
-    #    temp[:,:,j] = temp[:,:,j] * mask[:,:,i]
-    #plt.figure(figsize=(8,8))
-    #plt.imshow(temp)
     name_id = r['class_ids'][i]
     name = class_names[name_id]
     color = name_id / 255;
     print(name)
     print(name_id)
     visualize.apply_mask(mask_image, mask[:,:,i], [color, color, color], alpha=1.0)
-    #visualize.display_top_masks(mask_image, mask[:,:,i], r['class_ids'], class_names)
 
 plt.axis('off')
 plt.margins(0,0)
